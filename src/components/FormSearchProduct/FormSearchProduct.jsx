@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { pathDefault } from "../../common/path";
 import { locationService } from "../../services/location.service";
 import useDebounce from "../../hooks/useDebounce";
-import LinkCustom from "../LinkCustom/LinkCustom";
 import IconSearch from "../../assets/iconSearchProduct/IconSearch";
 import { DatePicker } from "antd";
+import diacritics from "diacritics";
+import { useContext } from "react";
+import { NotificationContext } from "../../App";
 
 const onChange = (date, dateString) => {
   console.log(date, dateString);
@@ -68,20 +70,44 @@ const items = [
 ];
 
 const FormSearchProduct = () => {
+  const { handleNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const [valueSearch, setValueSearch] = useState("");
   const [checkDropdown, setCheckDropdown] = useState(false);
-  const [listLocationSuggest, setListLocationSuggest] = useState([
-    {
-      key: 1,
-      label: "Hello",
-    },
-  ]);
-
+  const [listLocationSuggest, setListLocationSuggest] = useState([]);
+  const [selectedLocationId, setSelectedLocationId] = useState(null);
+  const [checkInDate, setCheckInDate] = useState(null);
+  const [checkOutDate, setCheckOutDate] = useState(null);
   const debounceValue = useDebounce(valueSearch, 1000);
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate(`${pathDefault.listProduct}?tenViTri=${valueSearch}`);
+    const totalGuests = counts.reduce((acc, count) => acc + count, 0);
+    if (
+      !selectedLocationId ||
+      !checkInDate ||
+      !checkOutDate ||
+      totalGuests === 0
+    ) {
+      handleNotification(
+        "Please select the check-in date, check-out date, and number of guests",
+        "error"
+      );
+      return;
+    }
+    const url = `${pathDefault.listProduct}?tenViTri=${selectedLocationId}&checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`;
+    window.open(url, "_blank");
+  };
+  const handleChange = (event) => {
+    setValueSearch(event.target.value);
+    setCheckDropdown(false);
+  };
+
+  const handleSelectSuggestion = (selectedLocation) => {
+    setValueSearch(
+      `${selectedLocation.tenViTri}, ${selectedLocation.tinhThanh}`
+    );
+    setSelectedLocationId(selectedLocation.id);
+    setCheckDropdown(false);
   };
 
   useEffect(() => {
@@ -89,19 +115,50 @@ const FormSearchProduct = () => {
       locationService
         .getAllDestinations(valueSearch)
         .then((res) => {
-          const newListLocationSuggest = res.data.content
+          const normalizedSearchValue = diacritics
+            .remove(valueSearch)
+            .toLowerCase();
+          const filteredData = res.data.content.filter((item) => {
+            const tenViTri = diacritics.remove(item.tenViTri).toLowerCase(); // Bỏ dấu và chuyển thành chữ thường
+            const tinhThanh = diacritics.remove(item.tinhThanh).toLowerCase(); // Bỏ dấu và chuyển thành chữ thường
+            return (
+              tenViTri.includes(normalizedSearchValue) ||
+              tinhThanh.includes(normalizedSearchValue)
+            );
+          });
+          const newListLocationSuggest = filteredData
             .slice(0, 4)
             .map((item, index) => {
               console.log(item);
               return {
                 key: index.toString(),
                 label: (
-                  <LinkCustom to={`/vi-tri/${item.id}`} icon={<IconSearch />}>
-                    <div className="text-red-500">
-                      <p>{item.tinhThanh}</p>
-                      <p>{item.quocGia}</p>
+                  <div
+                    onClick={() => {
+                      handleSelectSuggestion(item);
+                    }}
+                    className="flex items-center px-1 py-2"
+                  >
+                    <div
+                      className="flex items-center justify-center"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "8px",
+                        background: "#9ca3af",
+                        textAlign: "center",
+                        lineHeight: "50px",
+                        opacity: "0.5",
+                        color: "#000000",
+                      }}
+                    >
+                      <IconSearch />
                     </div>
-                  </LinkCustom>
+                    <div className="text-black flex ms-5 text-lg">
+                      <p>{item.tinhThanh}</p>,{" "}
+                      <p className="ms-1">{item.quocGia}</p>
+                    </div>
+                  </div>
                 ),
               };
             });
@@ -115,17 +172,9 @@ const FormSearchProduct = () => {
     }
   }, [debounceValue]);
 
-  const handleChange = (event) => {
-    setValueSearch(event.target.value);
-    if (!event.target.value) {
-      setCheckDropdown(false);
-    }
-  };
-
   const [counts, setCounts] = useState([0, 0, 0]); // [Under 2, Ages 2-12, Ages 13 or above]
   const [savedCounts, setSavedCounts] = useState([0, 0, 0]); // Lưu số lượng đã chọn để hiển thị
   const [visible, setVisible] = useState(false); // Kiểm soát hiển thị dropdown
-
   const increaseCount = (index) => {
     const newCounts = [...counts];
 
@@ -140,7 +189,6 @@ const FormSearchProduct = () => {
     newCounts[index] += 1;
     setCounts(newCounts);
   };
-
   const decreaseCount = (index) => {
     const newCounts = [...counts];
 
@@ -163,32 +211,26 @@ const FormSearchProduct = () => {
 
     setCounts(newCounts);
   };
-
   const clearAllCounts = () => {
     setCounts([0, 0, 0]); // Reset counts
     setSavedCounts([0, 0, 0]); // Reset savedCounts
     setVisible(false); // Đóng dropdown
   };
-
   const saveCounts = () => {
     setSavedCounts(counts); // Lưu counts vào savedCounts
     setVisible(false); // Đóng dropdown
   };
-
   const handleDropdownVisibleChange = (flag) => {
     setVisible(flag);
   };
-
   const isAges13Disabled = () => {
     return counts[2] === 1 && (counts[0] === 1 || counts[1] === 1);
   };
-
   const ageLabels = {
     "Under 2": "Infant",
     "Ages 2-12": "Children",
     "Ages 13 or above": "Adult",
   };
-
   const menu = (
     <Menu>
       {["Under 2", "Ages 2-12", "Ages 13 or above"].map((ageGroup, index) => (
@@ -242,20 +284,27 @@ const FormSearchProduct = () => {
         </Menu.Item>
       ))}
       <Menu.Item style={{ display: "flex", justifyContent: "space-between" }}>
-        <Button
-          onClick={clearAllCounts}
-          disabled={counts.every((count) => count === 0)}
-          style={{ marginRight: "auto" }}
-        >
-          Clear All
-        </Button>
-        <Button onClick={saveCounts} style={{ marginLeft: "50%" }}>
-          Save
-        </Button>
+        <span style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button
+            onClick={clearAllCounts}
+            disabled={counts.every((count) => count === 0)}
+          >
+            Clear All
+          </Button>
+          <Button
+            onClick={saveCounts}
+            style={{
+              background: "#ff385c",
+              color: "white",
+            }}
+            className="hover:outline-none"
+          >
+            Save
+          </Button>
+        </span>
       </Menu.Item>
     </Menu>
   );
-
   const getDisplayText = () => {
     const totalUnderTwo = savedCounts[0];
     const totalBetweenTwoAndTwelve = savedCounts[1];
@@ -276,8 +325,8 @@ const FormSearchProduct = () => {
 
   return (
     <div className="banner_form">
-      <h1>Find home on Airbnb</h1>
-      <p>Explore the perfect entire homes and rooms for every trip</p>
+      <h1 className="font-semibold">Find a place to stay on Airbnb</h1>
+      <p>Explore entire homes and rooms perfect for every trip.</p>
       <form onSubmit={handleSubmit} className="mt-4">
         <Dropdown
           menu={{
@@ -289,8 +338,8 @@ const FormSearchProduct = () => {
             <InputSearch
               classWrapper="location_content"
               classTitle={"location_content_top"}
-              contentLabel={"Where"}
-              placeHolder={"Search destinations"}
+              contentLabel={"LOCATION"}
+              placeHolder={"Any location"}
               classInput="input_search_location outline-none"
               onChange={handleChange}
               value={valueSearch}
@@ -300,29 +349,35 @@ const FormSearchProduct = () => {
         <div className="choose_date grid mt-2">
           <div className="checkin_date">
             <label className="text-xs" style={{ height: "18px" }}>
-              Check in
+              CKECK IN
             </label>
             <DatePicker
-              onChange={onChange}
+              onChange={(date) =>
+                setCheckInDate(date ? date.format("YYYY-MM-DD") : null)
+              }
+              // onChange={onChange}
               needConfirm
-              placeholder="Add dates"
+              placeholder="Add day"
             />
           </div>
           <span className="divided_date"></span>
           <div className="checkout_date">
             <label className="text-xs" style={{ height: "18px" }}>
-              Check out
+              CHECK OUT
             </label>
             <DatePicker
-              placeholder="Add dates"
-              onChange={onChange}
+              placeholder="Add day"
+              // onChange={onChange}
+              onChange={(date) =>
+                setCheckOutDate(date ? date.format("YYYY-MM-DD") : null)
+              }
               needConfirm
             />
           </div>
         </div>
         <div className="add_guest">
           <div className="add_guest_form mt-2">
-            <label>Who</label>
+            <label>GUEST</label>
             <Dropdown
               overlay={menu}
               trigger={["click"]}
@@ -338,7 +393,7 @@ const FormSearchProduct = () => {
               >
                 {savedCounts.reduce((acc, count) => acc + count, 0) > 0
                   ? getDisplayText()
-                  : "Add guests"}
+                  : "Add guest"}
               </Button>
             </Dropdown>
           </div>
