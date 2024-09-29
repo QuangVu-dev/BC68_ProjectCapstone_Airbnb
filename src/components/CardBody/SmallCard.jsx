@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { pathDefault } from "../../common/path";
 
-const SmallCard = ({ hinhAnh, tenViTri, tinhThanh, id }) => {
+const SmallCard = ({ hinhAnh, tenViTri, tinhThanh }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/list-of-available-rooms-for-rent/${id}`);
+    navigate(`/list-of-available-rooms-for-rent?tenViTri=${tenViTri}`);
   };
   return (
     <div
