@@ -34,6 +34,7 @@ const ExploreProduct = () => {
               hinhAnh={item.hinhAnh}
               tenViTri={item.tenViTri}
               tinhThanh={item.tinhThanh}
+              id={item.id}
             />
           );
         })}

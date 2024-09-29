@@ -4,10 +4,18 @@ import { pathDefault } from "../common/path";
 import UserTemplate from "../templates/UserTemplate/UserTemplate";
 import SigninPage from "../pages/Signin/SigninPage";
 import SignupPage from "../pages/Signup/SignupPage";
+import RentalRoomList from "../pages/RentalRoomList/RentalRoomList";
 
 const useRoutesCustom = () => {
   const routes = useRoutes([
-    { path: pathDefault.homePage, element: <UserTemplate /> },
+    {
+      path: pathDefault.homePage,
+      element: <UserTemplate />,
+    },
+    {
+      path: pathDefault.rentalRoomList,
+      element: <RentalRoomList />,
+    },
     {
       path: pathDefault.signup,
       element: <SignupPage />,

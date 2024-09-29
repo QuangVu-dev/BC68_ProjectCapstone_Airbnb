@@ -83,19 +83,20 @@ const FormSearchProduct = () => {
     event.preventDefault();
     const totalGuests = counts.reduce((acc, count) => acc + count, 0);
     if (
-      !selectedLocationId ||
+      !valueSearch ||
       !checkInDate ||
       !checkOutDate ||
-      totalGuests === 0
+      totalGuests === 0 ||
+      !selectedLocationId
     ) {
       handleNotification(
-        "Please select the check-in date, check-out date, and number of guests",
+        "Please select the location, check-in date, check-out date, and number of guests",
         "error"
       );
       return;
     }
-    const url = `${pathDefault.listProduct}?tenViTri=${selectedLocationId}&checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`;
-    window.open(url, "_blank");
+    const url = `${pathDefault.rentalRoomList}?tenViTri=${valueSearch}&maViTri=${selectedLocationId}&checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`;
+    window.open(url, "_self");
   };
   const handleChange = (event) => {
     setValueSearch(event.target.value);
@@ -231,6 +232,7 @@ const FormSearchProduct = () => {
     "Ages 2-12": "Children",
     "Ages 13 or above": "Adult",
   };
+
   const menu = (
     <Menu>
       {["Under 2", "Ages 2-12", "Ages 13 or above"].map((ageGroup, index) => (
