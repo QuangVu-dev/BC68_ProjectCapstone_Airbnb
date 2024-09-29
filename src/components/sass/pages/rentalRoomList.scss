@@ -6,3 +6,9 @@
 .button {
   @include styleButton;
 }
+
+@media (min-width: 1024px) {
+  .button {
+    margin-top: 12px;
+  }
+}
