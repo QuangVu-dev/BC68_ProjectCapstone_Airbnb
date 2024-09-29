@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const SmallCard = ({ hinhAnh, tenViTri, tinhThanh }) => {
+const SmallCard = ({ hinhAnh, tenViTri, tinhThanh, id }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/list-of-available-rooms-for-rent/${id}`);
+  };
   return (
-    <div className="flex items-center justify-start m-2 mt-5 space-x-4 rounded-xl cursor-pointer hover:bg-gray-100 hover:scale-105 transition tranform duration-200 ease-out">
+    <div
+      onClick={handleClick}
+      className="flex items-center justify-start m-2 mt-5 space-x-4 rounded-xl cursor-pointer hover:bg-gray-100 hover:scale-105 transition tranform duration-200 ease-out"
+    >
       {/* left */}
       <div className="relative h-20 w-20">
         <img

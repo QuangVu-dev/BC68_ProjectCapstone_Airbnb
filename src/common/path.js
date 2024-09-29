@@ -5,7 +5,7 @@ export const pathDefault = {
   help: "/help",
   signup: "/dang-ky",
   signin: "/dang-nhap",
-  listProduct: "/list-products",
+  rentalRoomList: "/list-of-available-rooms-for-rent",
   admin: "/admin",
   managerUser: "/admin/manager-user",
   managerLocation: "/admin/manager-location",
