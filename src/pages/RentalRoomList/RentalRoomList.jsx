@@ -6,12 +6,20 @@ import { format } from "date-fns";
 import { rentalRoomListService } from "../../services/rentalRoomList.service";
 import InfoCard from "../../components/CardBody/InfoCard";
 import Map from "../../components/Map/Map";
+import getCenter from "geolib/es/getCenter";
+import { locationCoordinates } from "../../components/Map/Map";
 
 const RentalRoomList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [rentalRoomList, setRentalRoomList] = useState([]);
   const infoCardRef = useRef(null);
+  const [coordinates, setCoordinates] = useState([]);
   const [mapHeight, setMapHeight] = useState(0);
+  const [mapViewport, setMapViewport] = useState({
+    latitude: 0,
+    longitude: 0,
+    zoom: 11,
+  });
   const selectedLocationId = searchParams.get("tenViTri");
   const checkInDate = searchParams.get("checkIn");
   const checkOutDate = searchParams.get("checkOut");
@@ -33,6 +41,24 @@ const RentalRoomList = () => {
         console.log(err);
       });
   }, [maViTri]);
+
+  useEffect(() => {
+    const coordsArray = coordinates
+      .filter((coord) => coord.maViTri === maViTri) // Thay đổi điều kiện phù hợp
+      .map((coord) => ({
+        latitude: coord.latitude,
+        longitude: coord.longitude,
+      }));
+
+    if (coordsArray.length > 0) {
+      const center = getCenter(coordsArray);
+      setMapViewport({
+        latitude: center.latitude,
+        longitude: center.longitude,
+        zoom: 11,
+      });
+    }
+  }, [maViTri, coordinates]);
 
   useEffect(() => {
     const updateMapHeight = () => {
@@ -73,7 +99,23 @@ const RentalRoomList = () => {
                 hinhAnh={item.hinhAnh}
                 tenPhong={item.tenPhong}
                 giaTien={item.giaTien}
-                moTa={item.moTa}
+                amenities={{
+                  wifi: item.wifi,
+                  tivi: item.tivi,
+                  mayGiat: item.mayGiat,
+                  dieuHoa: item.dieuHoa,
+                  bep: item.bep,
+                  banLa: item.banLa,
+                  doXe: item.doXe,
+                  hoBoi: item.hoBoi,
+                  banUi: item.banUi,
+                }}
+                roomInfo={{
+                  khach: item.khach,
+                  phongNgu: item.phongNgu,
+                  giuong: item.giuong,
+                  phongTam: item.phongTam,
+                }}
               />
             );
           })}
@@ -83,7 +125,7 @@ const RentalRoomList = () => {
           className="hidden lg:inline-flex lg:w-1/2 xl:w-1/3 flex-grow overflow-hidden"
           style={{ height: mapHeight }}
         >
-          <Map />
+          <Map setCoordinates={setCoordinates} />
         </section>
       </main>
       <Footer />
