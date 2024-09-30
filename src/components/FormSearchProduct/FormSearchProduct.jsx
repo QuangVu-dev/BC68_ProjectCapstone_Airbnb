@@ -79,6 +79,7 @@ const FormSearchProduct = () => {
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
   const debounceValue = useDebounce(valueSearch, 1000);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const totalGuests = counts.reduce((acc, count) => acc + count, 0);
@@ -98,6 +99,7 @@ const FormSearchProduct = () => {
     const url = `${pathDefault.rentalRoomList}?tenViTri=${valueSearch}&maViTri=${selectedLocationId}&checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${totalGuests}`;
     window.open(url, "_self");
   };
+
   const handleChange = (event) => {
     setValueSearch(event.target.value);
     setCheckDropdown(false);
@@ -108,6 +110,14 @@ const FormSearchProduct = () => {
       `${selectedLocation.tenViTri}, ${selectedLocation.tinhThanh}`
     );
     setSelectedLocationId(selectedLocation.id);
+    const coords = locationCoordinates[selectedLocation.id];
+    if (coords) {
+      setMapViewport({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        zoom: 11,
+      });
+    }
     setCheckDropdown(false);
   };
 
@@ -232,7 +242,6 @@ const FormSearchProduct = () => {
     "Ages 2-12": "Children",
     "Ages 13 or above": "Adult",
   };
-
   const menu = (
     <Menu>
       {["Under 2", "Ages 2-12", "Ages 13 or above"].map((ageGroup, index) => (
