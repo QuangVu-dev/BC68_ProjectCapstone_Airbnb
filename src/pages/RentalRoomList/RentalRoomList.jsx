@@ -8,6 +8,8 @@ import InfoCard from "../../components/CardBody/InfoCard";
 import Map from "../../components/Map/Map";
 import getCenter from "geolib/es/getCenter";
 import { locationCoordinates } from "../../components/Map/Map";
+import { Link } from "react-router-dom";
+import { pathDefault } from "../../common/path";
 
 const RentalRoomList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,22 +45,16 @@ const RentalRoomList = () => {
   }, [maViTri]);
 
   useEffect(() => {
-    const coordsArray = coordinates
-      .filter((coord) => coord.maViTri === maViTri) // Thay đổi điều kiện phù hợp
-      .map((coord) => ({
-        latitude: coord.latitude,
-        longitude: coord.longitude,
-      }));
-
-    if (coordsArray.length > 0) {
-      const center = getCenter(coordsArray);
+    const coords = locationCoordinates[maViTri]; // Lấy tọa độ theo maViTri
+    if (coords) {
+      setCoordinates([coords]); // Chuyển thành mảng có một phần tử
       setMapViewport({
-        latitude: center.latitude,
-        longitude: center.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         zoom: 11,
       });
     }
-  }, [maViTri, coordinates]);
+  }, [maViTri]);
 
   useEffect(() => {
     const updateMapHeight = () => {
@@ -94,29 +90,31 @@ const RentalRoomList = () => {
           </div>
           {rentalRoomList.slice(0, 3).map((item, index) => {
             return (
-              <InfoCard
-                key={index}
-                hinhAnh={item.hinhAnh}
-                tenPhong={item.tenPhong}
-                giaTien={item.giaTien}
-                amenities={{
-                  wifi: item.wifi,
-                  tivi: item.tivi,
-                  mayGiat: item.mayGiat,
-                  dieuHoa: item.dieuHoa,
-                  bep: item.bep,
-                  banLa: item.banLa,
-                  doXe: item.doXe,
-                  hoBoi: item.hoBoi,
-                  banUi: item.banUi,
-                }}
-                roomInfo={{
-                  khach: item.khach,
-                  phongNgu: item.phongNgu,
-                  giuong: item.giuong,
-                  phongTam: item.phongTam,
-                }}
-              />
+              <Link to={`/room-rental-detail/${item.id}`} key={index}>
+                <InfoCard
+                  key={index}
+                  hinhAnh={item.hinhAnh}
+                  tenPhong={item.tenPhong}
+                  giaTien={item.giaTien}
+                  amenities={{
+                    wifi: item.wifi,
+                    tivi: item.tivi,
+                    mayGiat: item.mayGiat,
+                    dieuHoa: item.dieuHoa,
+                    bep: item.bep,
+                    banLa: item.banLa,
+                    doXe: item.doXe,
+                    hoBoi: item.hoBoi,
+                    banUi: item.banUi,
+                  }}
+                  roomInfo={{
+                    khach: item.khach,
+                    phongNgu: item.phongNgu,
+                    giuong: item.giuong,
+                    phongTam: item.phongTam,
+                  }}
+                />
+              </Link>
             );
           })}
         </section>
@@ -125,7 +123,7 @@ const RentalRoomList = () => {
           className="hidden lg:inline-flex lg:w-1/2 xl:w-1/3 flex-grow overflow-hidden"
           style={{ height: mapHeight }}
         >
-          <Map setCoordinates={setCoordinates} />
+          <Map coordinates={coordinates} />
         </section>
       </main>
       <Footer />

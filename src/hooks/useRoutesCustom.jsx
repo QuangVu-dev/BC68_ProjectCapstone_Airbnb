@@ -5,6 +5,7 @@ import UserTemplate from "../templates/UserTemplate/UserTemplate";
 import SigninPage from "../pages/Signin/SigninPage";
 import SignupPage from "../pages/Signup/SignupPage";
 import RentalRoomList from "../pages/RentalRoomList/RentalRoomList";
+import RentalRoomDetail from "../pages/RentalRoomDetail/RentalRoomDetail";
 
 const useRoutesCustom = () => {
   const routes = useRoutes([
@@ -15,6 +16,10 @@ const useRoutesCustom = () => {
     {
       path: pathDefault.rentalRoomList,
       element: <RentalRoomList />,
+    },
+    {
+      path: pathDefault.rentalRoomDetail,
+      element: <RentalRoomDetail />,
     },
     {
       path: pathDefault.signup,
