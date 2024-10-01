@@ -6,6 +6,7 @@ export const pathDefault = {
   signup: "/dang-ky",
   signin: "/dang-nhap",
   rentalRoomList: "/list-of-available-rooms-for-rent",
+  rentalRoomDetail: "/room-rental-detail/:id",
   admin: "/admin",
   managerUser: "/admin/manager-user",
   managerLocation: "/admin/manager-location",

@@ -110,7 +110,7 @@ const FormSearchProduct = () => {
       `${selectedLocation.tenViTri}, ${selectedLocation.tinhThanh}`
     );
     setSelectedLocationId(selectedLocation.id);
-    const coords = locationCoordinates[selectedLocation.id];
+    const coords = locationCoordinates[selectedLocation.id]; // Lấy tọa độ dựa trên ID
     if (coords) {
       setMapViewport({
         latitude: coords.latitude,
