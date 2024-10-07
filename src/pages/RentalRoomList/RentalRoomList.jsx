@@ -6,10 +6,8 @@ import { format } from "date-fns";
 import { rentalRoomListService } from "../../services/rentalRoomList.service";
 import InfoCard from "../../components/CardBody/InfoCard";
 import Map from "../../components/Map/Map";
-import getCenter from "geolib/es/getCenter";
 import { locationCoordinates } from "../../components/Map/Map";
 import { Link } from "react-router-dom";
-import { pathDefault } from "../../common/path";
 
 const RentalRoomList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,7 +88,10 @@ const RentalRoomList = () => {
           </div>
           {rentalRoomList.slice(0, 3).map((item, index) => {
             return (
-              <Link to={`/room-rental-detail/${item.id}`} key={index}>
+              <Link
+                to={`/room-rental-detail/${item.id}?selectedLocationId=${selectedLocationId}`}
+                key={index}
+              >
                 <InfoCard
                   key={index}
                   hinhAnh={item.hinhAnh}
