@@ -168,7 +168,7 @@ const RentalRoomDetail = () => {
               <div className="pb-12">
                 <div>
                   <div className="mt-8">
-                    <CheckForm price={roomDetails.giaTien} />
+                    <CheckForm price={roomDetails.giaTien} roomId={id} />
                   </div>
                 </div>
               </div>

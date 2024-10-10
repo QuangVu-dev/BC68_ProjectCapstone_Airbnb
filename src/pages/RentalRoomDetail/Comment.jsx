@@ -3,24 +3,40 @@ import { commentRoomDetailService } from "../../services/commentRoomDetail.servi
 import IconStar from "../../assets/iconStar/IconStar";
 import { formatDistanceToNow } from "date-fns";
 import RatingStarForm from "../../templates/FormTemplate/RatingStarForm";
+import { setLocalStorage, getLocalStorage } from "../../utils/utils";
 
 const Comment = ({ roomId }) => {
   const [listComment, setListComment] = useState([]);
 
   useEffect(() => {
-    commentRoomDetailService
-      .getAllCommentRoomDetailById(roomId)
-      .then((res) => {
-        console.log(res);
-        setListComment(res.data.content);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    const fetchComments = async () => {
+      const storedComments = getLocalStorage(`comments_${roomId}`);
+      if (storedComments) {
+        setListComment(storedComments);
+      } else {
+        // Chỉ gọi API nếu không có bình luận trong localStorage
+        try {
+          const res =
+            await commentRoomDetailService.getAllCommentRoomDetailById(roomId);
+          const commentsFromAPI = res.data.content;
+
+          setListComment(commentsFromAPI);
+          setLocalStorage(`comments_${roomId}`, commentsFromAPI);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchComments();
+  }, [roomId]);
 
   const handleNewComment = (newComment) => {
-    setListComment((prevComments) => [...prevComments, newComment]);
+    setListComment((prevComments) => {
+      const updatedComments = [...prevComments, newComment];
+      setLocalStorage(`comments_${roomId}`, updatedComments);
+      return updatedComments;
+    });
   };
 
   return (

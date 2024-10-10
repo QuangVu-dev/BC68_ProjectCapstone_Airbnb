@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../components/sass/pages/ratingStarForm.scss";
 import IconStar from "../../assets/iconStar/IconStar";
 import { Col, Row, Space } from "antd";
-import { useFormik } from "formik";
+import { commentRoomDetailService } from "../../services/commentRoomDetail.service";
 
 const RatingSlider = ({ star, value, totalComments }) => {
   const percentage = totalComments > 0 ? (value / totalComments) * 100 : 0;
@@ -65,35 +65,39 @@ const RatingStarForm = ({ comments, onNewComment, roomId }) => {
   const [hoverRating, setHoverRating] = useState(0);
   const [formValues, setFormValues] = useState({
     noiDung: "",
-    rating_star_name: "",
+    tenNguoiBinhLuan: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     // Cấu trúc dữ liệu để gửi lên API
     const newComment = {
-      id: 0, // Bạn có thể để 0 nếu API sẽ tạo ID
-      maPhong: roomId, // Sử dụng roomId được truyền vào
-      maNguoiBinhLuan: 1, // Bạn có thể thay đổi thành ID thực tế của người dùng
+      id: 0,
+      maPhong: roomId,
+      maNguoiBinhLuan: 0,
       ngayBinhLuan: new Date().toISOString(),
-      noiDung: formValues.noiDung,
+      noiDung: formValues.noiDung.trim(),
       saoBinhLuan: userRating,
+      tenNguoiBinhLuan: formValues.tenNguoiBinhLuan,
     };
+    const token = localStorage.getItem("token");
 
     try {
-      await commentRoomDetailService.submitComment(newComment); // Gọi API để gửi bình luận
-      onNewComment(newComment); // Thêm bình luận mới vào danh sách
-      setFormValues({ noiDung: "", rating_star_name: "" });
+      await commentRoomDetailService.addComment(token, newComment);
+      onNewComment(newComment);
+      setFormValues({ noiDung: "", tenNguoiBinhLuan: "" });
       setUserRating(0);
-      console.log(newComment);
     } catch (error) {
-      console.error("Error submitting comment:", error);
+      console.error(
+        "Error submitting comment:",
+        error.response ? error.response.data : error
+      );
     }
   };
 
@@ -204,7 +208,7 @@ const RatingStarForm = ({ comments, onNewComment, roomId }) => {
                 className="form_control"
                 placeholder="Your name"
                 required
-                value={formValues.rating_star_name}
+                value={formValues.tenNguoiBinhLuan}
                 onChange={handleChange}
               />
               <button
