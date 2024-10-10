@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Dropdown, Button, Menu } from "antd";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { DatePicker } from "antd";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { bookingService } from "../../services/booking.service";
+import { NotificationContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const onChange = (date, dateString) => {
   console.log(date, dateString);
@@ -60,12 +65,61 @@ const items = [
   },
 ];
 
-const CheckForm = ({ price }) => {
+const CheckForm = ({ price, roomId }) => {
+  const navigate = useNavigate();
+  const { handleNotification } = useContext(NotificationContext);
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [counts, setCounts] = useState([0, 0, 0]); // [Under 2, Ages 2-12, Ages 13 or above]
   const [savedCounts, setSavedCounts] = useState([0, 0, 0]); // Lưu số lượng đã chọn để hiển thị
   const [visible, setVisible] = useState(false); // Kiểm soát hiển thị dropdown
+  const [isReverse, setIsReverse] = useState(false);
+
+  const { handleSubmit, values, resetForm, setFieldValue } = useFormik({
+    initialValues: {
+      id: 0,
+      maPhong: roomId,
+      ngayDen: null,
+      ngayDi: null,
+      soLuongKhach: 0,
+      maNguoiDung: 0,
+    },
+    onSubmit: (values, { resetForm }) => {
+      if (!isReverse) {
+        bookingService
+          .getAllBooking({ ...values })
+          .then((res) => {
+            console.log(res);
+            navigate("/booking");
+          })
+          .catch((err) => {
+            handleNotification(err.response.data.content, "error");
+          });
+      } else {
+        navigate(
+          `/booking?checkIn=${checkInDate}&checkOut=${checkOutDate}&guests=${savedCounts.reduce(
+            (acc, count) => acc + count,
+            0
+          )}`
+        );
+      }
+      resetForm();
+    },
+    validationSchema: yup.object({}),
+  });
+  const handleReverse = () => {
+    setIsReverse(true);
+    handleSubmit(); // Gọi hàm submit để xử lý
+  };
+  const handleDateChange = (date, dateString, type) => {
+    if (type === "checkIn") {
+      setCheckInDate(dateString);
+      setFieldValue("ngayDen", dateString); // Cập nhật giá trị ngayDen
+    } else {
+      setCheckOutDate(dateString);
+      setFieldValue("ngayDi", dateString); // Cập nhật giá trị ngayDi
+    }
+  };
   const increaseCount = (index) => {
     const newCounts = [...counts];
 
@@ -108,8 +162,12 @@ const CheckForm = ({ price }) => {
     setVisible(false); // Đóng dropdown
   };
   const saveCounts = () => {
-    setSavedCounts(counts); // Lưu counts vào savedCounts
-    setVisible(false); // Đóng dropdown
+    setSavedCounts(counts);
+    setFieldValue(
+      "soLuongKhach",
+      counts.reduce((acc, count) => acc + count, 0)
+    );
+    setVisible(false);
   };
   const handleDropdownVisibleChange = (flag) => {
     setVisible(flag);
@@ -217,7 +275,6 @@ const CheckForm = ({ price }) => {
     const outDate = new Date(checkOutDate);
     return (outDate - inDate) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
   };
-
   const nights = calculateNights();
   const totalPrice = price * nights;
 
@@ -243,15 +300,16 @@ const CheckForm = ({ price }) => {
             </span>
           )}
       </span>
-      <form className="mt-4">
+      <form method="POST" onSubmit={handleSubmit} className="mt-4">
         <div className="choose_date grid mt-2">
           <div className="checkin_date">
             <label className="text-xs" style={{ height: "18px" }}>
               CKECK IN
             </label>
             <DatePicker
-              onChange={(date) =>
-                setCheckInDate(date ? date.format("YYYY-MM-DD") : null)
+              name="ngayDen"
+              onChange={(date, dateString) =>
+                handleDateChange(date, dateString, "checkIn")
               }
               needConfirm
               placeholder="Add day"
@@ -263,9 +321,10 @@ const CheckForm = ({ price }) => {
               CHECK OUT
             </label>
             <DatePicker
+              name="ngayDi"
               placeholder="Add day"
-              onChange={(date) =>
-                setCheckOutDate(date ? date.format("YYYY-MM-DD") : null)
+              onChange={(date, dateString) =>
+                handleDateChange(date, dateString, "checkOut")
               }
               needConfirm
             />
@@ -275,6 +334,7 @@ const CheckForm = ({ price }) => {
           <div className="add_guest_form">
             <label>GUEST</label>
             <Dropdown
+              name="soLuongKhach"
               overlay={menu}
               trigger={["click"]}
               onVisibleChange={handleDropdownVisibleChange}
@@ -295,7 +355,15 @@ const CheckForm = ({ price }) => {
             </Dropdown>
           </div>
         </div>
-        <button className="btn-search">
+        <button
+          className="btn-search"
+          onClick={handleReverse}
+          disabled={
+            !checkInDate ||
+            !checkOutDate ||
+            !savedCounts.some((count) => count > 0)
+          }
+        >
           <span className="btn-search-wrapper">
             <span className="btn-hover"></span>
           </span>

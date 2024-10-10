@@ -7,5 +7,6 @@ export const pathDefault = {
   signin: "/dang-nhap",
   rentalRoomList: "/list-of-available-rooms-for-rent",
   rentalRoomDetail: "/room-rental-detail/:id",
+  booking: "/booking",
   admin: "/admin",
 };
