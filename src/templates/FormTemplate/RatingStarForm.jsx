@@ -215,7 +215,7 @@ const RatingStarForm = ({ comments, onNewComment, roomId }) => {
                 type="submit"
                 className="btn btn-blue btn-effect-default mb-2"
               >
-                Add comment
+                Add Review
               </button>
             </div>
           </div>
