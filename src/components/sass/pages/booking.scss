@@ -1,58 +1,206 @@
 .btn_back {
-  padding: 0px;
-  cursor: pointer;
-  margin: 0px;
-  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
-  border-radius: 50%;
-  background: transparent;
-  position: relative;
-  outline: none;
-  touch-action: manipulation;
-  display: inline-block;
-  color: #222222;
+   padding: 0px;
+   cursor: pointer;
+   margin: 0px;
+   transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+   border-radius: 50%;
+   background: transparent;
+   position: relative;
+   outline: none;
+   touch-action: manipulation;
+   display: inline-block;
+   color: #222222;
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    top: 50%;
-    height: 48px;
-    width: 48px;
-  }
+   &::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      top: 50%;
+      height: 48px;
+      width: 48px;
+   }
 
-  &:hover {
-    color: #000000;
-  }
+   &:hover {
+      color: #000000;
+   }
 
-  &:hover::before {
-    background: #f7f7f7;
-  }
+   &:hover::before {
+      background: #f7f7f7;
+   }
 }
 
 .content_booking {
-  &::before {
-    content: "";
-    display: flex;
-  }
-  &::after {
-    content: "";
-    display: flex;
-  }
+   .pay_date {
+      &:focus-within {
+         box-shadow: inset 0 0 0 2px #222222;
+      }
+   }
+   .content_booking_right {
+      width: 41.6667%;
+      margin-left: 8.3333%;
+      margin-right: 0%;
 
-  .content_booking_right {
-    width: 41.6667%;
-    margin-left: 8.3333%;
-    margin-right: 0%;
-  }
+      .info_card_booking {
+         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      }
+   }
+   .signin100_form {
+      flex-grow: 1;
+      width: 100%;
+
+      h1 {
+         text-align: center;
+         line-height: 1.66;
+         font-weight: 700;
+         color: #222;
+         font-size: 32px;
+         letter-spacing: 1px;
+         padding-bottom: 54px;
+      }
+
+      .wrap_input100 {
+         position: relative;
+         width: 100%;
+         z-index: 1;
+         margin-bottom: 10px;
+
+         .wrap_input100.has_error {
+            margin-bottom: 5px;
+         }
+
+         .wrap_input100:focus-within label {
+            color: #57b846;
+            padding-left: 28px;
+         }
+
+         label {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            padding-left: 35px;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+         }
+
+         .active {
+            color: #57b846;
+            padding-left: 28px;
+         }
+
+         input {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #666;
+            display: block;
+            width: 100%;
+            background: #e6e6e6;
+            height: 50px;
+            border-radius: 25px;
+            padding: 0 30px 0 68px;
+
+            &:focus {
+               border-color: transparent !important;
+               outline: none;
+            }
+         }
+
+         input:focus + .focus_input100 {
+            -webkit-animation: anim-shadow 0.5s ease-in-out forwards;
+            animation: anim-shadow 0.5s ease-in-out forwards;
+         }
+         @-webkit-keyframes anim-shadow {
+            to {
+               box-shadow: 0 0 70px 25px;
+               opacity: 0;
+            }
+         }
+         @keyframes anim-shadow {
+            to {
+               box-shadow: 0 0 70px 25px;
+               opacity: 0;
+            }
+         }
+         .focus_input100 {
+            display: block;
+            position: absolute;
+            border-radius: 25px;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 0;
+            color: rgba(87, 184, 70, 0.8);
+         }
+
+         .notify_error {
+            margin-top: 4px;
+            font-size: 16px;
+            color: #f44336;
+         }
+      }
+
+      .container_signin100_form_btn {
+         width: 100%;
+         display: -webkit-box;
+         display: -webkit-flex;
+         display: -moz-box;
+         display: -ms-flexbox;
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         padding-top: 20px;
+
+         .signin100_form_btn {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #fff;
+            width: 100%;
+            height: 50px;
+            border-radius: 25px;
+            background: #57b846;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 25px;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+            transition: all 0.5s;
+
+            &:hover {
+               background: #000;
+            }
+         }
+      }
+
+      .signin_image {
+         padding-top: 116px;
+         transition: all 0.5s;
+
+         .signin_image_link {
+            color: #000;
+            transition: color 0.3s ease;
+
+            &:hover {
+               color: #57b846;
+            }
+         }
+      }
+   }
 }
 
 @media (min-width: 768px) {
-  .info_card_booking {
-    padding: 24px;
-    border: 1px solid rgb(221 221 221);
-    border-radius: 12px;
-  }
+   .info_card_booking {
+      padding: 24px;
+      border: 1px solid rgb(221 221 221);
+      border-radius: 12px;
+   }
 }

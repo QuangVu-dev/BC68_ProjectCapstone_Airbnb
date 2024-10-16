@@ -178,7 +178,7 @@ const FormSearchProduct = () => {
 
    const disabledCheckoutDate = (current) => {
       if (!checkInDate) return false; // Không khóa nếu chưa chọn check-in
-      return current && current < moment(checkInDate, "YYYY-MM-DD").subtract(0, "days"); // Khóa các ngày trước check-in 1 ngày
+      return current && current < moment(checkInDate, "YYYY-MM-DD").subtract(0, "days"); // Khóa các ngày trước check-in
    };
 
    const handleChange = (event) => {
