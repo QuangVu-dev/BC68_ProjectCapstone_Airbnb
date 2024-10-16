@@ -7,4 +7,8 @@ export const pathDefault = {
   signin: "/dang-nhap",
   listProduct: "/list-products",
   admin: "/admin",
+  managerUser: "/admin/manager-user",
+  managerLocation: "/admin/manager-location",
+  informationPertional: "/information-pertional",
+  adminLogin: "/admin-login",
 };

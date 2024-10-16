@@ -73,7 +73,7 @@ const FormSignUp = () => {
         .string()
         .required(notiValidation.empty)
         .min(6, "Please enter a minimum of 6 characters")
-        .max(10, "Please enter a maximum of 10 characters")
+        .max(20, "Please enter a maximum of 20 characters")
         .matches(
           /^(?=.*[A-Z])(?=.*\d).+$/,
           "Please enter at least one uppercase letter and one number"

@@ -51,7 +51,7 @@ const SigninPage = () => {
           .string()
           .required(notiValidation.empty)
           .email(notiValidation.email),
-        password: yup.string().required(notiValidation.empty).min(6).max(10),
+        password: yup.string().required(notiValidation.empty).min(6).max(20),
       }),
     });
 
