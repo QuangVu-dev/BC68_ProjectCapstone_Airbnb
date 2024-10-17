@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { commentRoomDetailService } from "../../services/commentRoomDetail.service";
 import IconStar from "../../assets/iconStar/IconStar";
 import { formatDistanceToNow } from "date-fns";
@@ -49,7 +49,7 @@ const Comment = ({ roomId }) => {
          <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-5">
             {listComment.map((item, index) => {
                return (
-                  <div className="px-3">
+                  <div className="px-3" key={index}>
                      {/* info author  */}
                      <div className="flex space-x-3 items-center my-2">
                         <img className="w-10 h-10 rounded-full" src={item.avatar} alt="" />
