@@ -6,7 +6,9 @@ import SigninPage from "../pages/Signin/SigninPage";
 import SignupPage from "../pages/Signup/SignupPage";
 import RentalRoomList from "../pages/RentalRoomList/RentalRoomList";
 import RentalRoomDetail from "../pages/RentalRoomDetail/RentalRoomDetail";
-
+import Booking from "../pages/Booking/Booking";
+import AdminTemplate from "../templates/AdminTemplate/AdminTemplate";
+import UserProfile from "../pages/User/UserProfile";
 import ManageUser from "../pages/Manage/ManageUser";
 import ManageInfoLocation from "../pages/Manage/ManageInfoLocation";
 import ManageInfoRoom from "../pages/Manage/ManageInfoRoom";
@@ -16,6 +18,7 @@ const useRoutesCustom = () => {
       {
          path: pathDefault.homePage,
          element: <UserTemplate />,
+         children: [{ path: pathDefault.informationPertional, element: <UserProfile /> }],
       },
       {
          path: pathDefault.rentalRoomList,
@@ -26,12 +29,42 @@ const useRoutesCustom = () => {
          element: <RentalRoomDetail />,
       },
       {
+         path: pathDefault.booking,
+         element: <Booking />,
+      },
+      {
          path: pathDefault.signup,
          element: <SignupPage />,
       },
       {
          path: pathDefault.signin,
          element: <SigninPage />,
+      },
+      {
+         path: pathDefault.admin,
+         element: <AdminTemplate />,
+         children: [
+            {
+               index: true,
+               element: <ManageUser />,
+            },
+            {
+               path: "manage-user",
+               element: <ManageUser />,
+            },
+            {
+               path: "manage-info-location",
+               element: <ManageInfoLocation />,
+            },
+            {
+               path: "manage-info-room",
+               element: <ManageInfoRoom />,
+            },
+            {
+               path: "manage-room-book",
+               element: <ManageRoomBook />,
+            },
+         ],
       },
    ]);
    return routes;
