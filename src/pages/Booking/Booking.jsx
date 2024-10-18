@@ -47,12 +47,6 @@ const Booking = () => {
       const outDate = new Date(checkOutDate);
       return (outDate - inDate) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
    };
-   // const calculateNightsFromToday = () => {
-   //    const today = new Date();
-   //    const inDate = new Date(checkInDate);
-   //    if (inDate <= today) return 0; // Nếu ngày check-in đã qua thì không tính
-   //    return (inDate - today) / (1000 * 60 * 60 * 24); // Số đêm từ hôm nay đến ngày check-in
-   // };
    const getSecondPaymentDate = () => {
       const today = new Date();
       const inDate = new Date(checkInDate);
@@ -123,36 +117,36 @@ const Booking = () => {
    return (
       <div>
          <HeaderBooking />
-         <main className="mt-20">
-            <div style={{ minHeight: "auto" }}>
+         <main style={{ overflow: "visible" }}>
+            <div style={{ height: "auto" }}>
                <div style={{ display: "contents" }}>
                   <div className="sm:px-6 md:px-10 lg:px-20">
-                     <div className="flex items-center flex-row mb-4 mt-20 pt-16">
-                        <div
-                           style={{
-                              paddingRight: "18px",
-                              marginTop: "10px",
-                              marginLeft: "-34px",
-                           }}
-                        >
-                           <button onClick={handleBackClick} className="btn_back">
-                              <span className="relative">
-                                 <IconBack />
-                              </span>
-                           </button>
-                        </div>
-                        <div
-                           className="leading-9 font-medium text-4xl"
-                           style={{ letterSpacing: "-0.04rem" }}
-                        >
-                           <h1>Confirm and pay</h1>
-                        </div>
-                     </div>
                      <div className="content_booking">
+                        <div className="flex items-center flex-row mb-4 mt-20 pt-16">
+                           <div
+                              style={{
+                                 paddingRight: "18px",
+                                 marginTop: "10px",
+                                 marginLeft: "-34px",
+                              }}
+                           >
+                              <button onClick={handleBackClick} className="btn_back">
+                                 <span className="relative">
+                                    <IconBack />
+                                 </span>
+                              </button>
+                           </div>
+                           <div
+                              className="leading-9 font-medium text-4xl"
+                              style={{ letterSpacing: "-0.04rem" }}
+                           >
+                              <h1>Confirm and pay</h1>
+                           </div>
+                        </div>
                         <div className="flex items-stretch justify-start flex-wrap w-full ml-auto mr-auto sm:px-6 md:px-10 lg:px-20">
                            <div className="relative w-1/2 mx-auto">
                               <div className="mb-16">
-                                 <div style={{ display: "contents" }}>
+                                 <div style={{ display: "block" }}>
                                     <div className="pb-6 mt-8">
                                        <div
                                           className="font-medium"
