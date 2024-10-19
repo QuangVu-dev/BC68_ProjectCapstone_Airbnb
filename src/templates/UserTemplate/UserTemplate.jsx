@@ -8,23 +8,25 @@ import CarouselProduct from "../../components/CarouselProduct/CarouselProduct";
 import Describe from "../../components/Describe/Describe";
 import Facility from "../../components/Facility/Facility";
 import QuestionAndAnswer from "../../components/Q&A/QuestionAndAnswer";
+import TypeOfRental from "../../components/TypeOfRental/TypeOfRental";
 
 const UserTemplate = () => {
-  return (
-    <>
-      <Header />
-      <Banner />
-      <main>
-        <Describe />
-        <ExploreProduct />
-        <Facility />
-        <CarouselProduct />
-        <Outlet />
-        <QuestionAndAnswer />
-      </main>
-      <Footer />
-    </>
-  );
+   return (
+      <>
+         <Header />
+         <Banner />
+         <main>
+            <Describe />
+            {/* <TypeOfRental /> */}
+            <ExploreProduct />
+            <Facility />
+            <CarouselProduct />
+            <Outlet />
+            <QuestionAndAnswer />
+         </main>
+         <Footer />
+      </>
+   );
 };
 
 export default UserTemplate;

@@ -468,6 +468,7 @@
 :root {
    --section_max-width-baseline: 1440px;
    --section_margin-baseline: 0 auto;
+   --section_padding-small: 24px 12px 0px 12px;
    --section_padding-baseline: 32px 24px 0px 24px;
    --section_padding-medium: 40px 40px 0px 40px;
    --section_padding-large: 48px 80px 0px 80px;
@@ -924,6 +925,15 @@
    }
 }
 
+// TYPE OF RENTAL
+.bungalow {
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: 50%;
+   max-width: 100%;
+   margin: 0 auto;
+}
+
 // Q&A
 .ant-collapse {
    background-color: transparent;
@@ -935,13 +945,17 @@
       padding-bottom: 12px;
       font-weight: 100 !important;
 
+      .ant-collapse-header-text {
+         font-size: 16px;
+      }
+
       .ant-collapse-arrow {
          font-size: 14px !important;
       }
    }
 
    .ant-collapse-content {
-      font-size: 18px;
+      font-size: 14px;
       color: #717171;
 
       .ant-collapse-content-box {
@@ -1028,6 +1042,17 @@ footer {
    }
 }
 
+@media (min-width: 480px) {
+   .banner_wrapper {
+      --section_padding: var(--section_padding-small);
+   }
+   .banner_form {
+      h1 {
+         padding-top: 20px !important;
+      }
+   }
+}
+
 @media (min-width: 640px) {
    .header_content_center {
       --explore-nav_padding-block-start: 12px;
@@ -1058,6 +1083,10 @@ footer {
       border: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
       width: 420px;
+
+      h1 {
+         padding-top: 0px !important;
+      }
    }
    .check_form {
       padding: 32px;
