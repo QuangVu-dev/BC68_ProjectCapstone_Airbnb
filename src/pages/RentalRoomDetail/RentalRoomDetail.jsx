@@ -55,7 +55,7 @@ const RentalRoomDetail = () => {
    return (
       <div>
          <Header />
-         <main className="mt-20 max-w-7xl sm:px-6 md:px-10 lg:px-20 p-5">
+         <main className="mt-20 max-w-7xl px-3 sm:px-6 md:px-10 lg:px-20">
             <h1 className="text-3xl font-semibold">{roomDetails.tenPhong}</h1>
             <img src={roomDetails.hinhAnh} alt={roomDetails.tenPhong} className="my-4 rounded-lg" />
             <div className="flex items-stretch justify-start flex-nowrap w-full mx-auto">

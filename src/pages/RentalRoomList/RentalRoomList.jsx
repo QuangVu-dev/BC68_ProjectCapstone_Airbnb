@@ -73,7 +73,7 @@ const RentalRoomList = () => {
    return (
       <div>
          <Header />
-         <main className="flex mt-20 max-w-7xl sm:px-6 md:px-10 lg:px-20">
+         <main className="flex mt-20 max-w-7xl px-3 sm:px-6 md:px-10 lg:px-20">
             <section ref={infoCardRef} className="pr-5 sm:w-full lg:w-1/2 xl:w-2/3 pt-10">
                <p className="text-base">
                   300+ Stays - {range} - for {totalGuests} {""}

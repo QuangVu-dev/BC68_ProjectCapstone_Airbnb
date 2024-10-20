@@ -8,7 +8,6 @@ import CarouselProduct from "../../components/CarouselProduct/CarouselProduct";
 import Describe from "../../components/Describe/Describe";
 import Facility from "../../components/Facility/Facility";
 import QuestionAndAnswer from "../../components/Q&A/QuestionAndAnswer";
-import TypeOfRental from "../../components/TypeOfRental/TypeOfRental";
 
 const UserTemplate = () => {
    return (
@@ -17,7 +16,6 @@ const UserTemplate = () => {
          <Banner />
          <main>
             <Describe />
-            {/* <TypeOfRental /> */}
             <ExploreProduct />
             <Facility />
             <CarouselProduct />

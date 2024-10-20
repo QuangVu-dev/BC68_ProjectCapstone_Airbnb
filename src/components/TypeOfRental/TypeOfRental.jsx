@@ -10,8 +10,10 @@ const TypeOfRental = () => {
          </div>
 
          <div className="grid grid-cols-3">
-            <div className="row-span-2 col-span-2 bungalow">
-               <img src={Bungalows} alt="" />
+            <div className="row-span-2 col-span-2 relative bungalow">
+               <div className="absolute bungalow_abs">
+                  <img src={Bungalows} alt="" className="w-full" />
+               </div>
             </div>
             <div className="row-span-2 col-span-1"></div>
             <div className="row-span-2 col-span-1"></div>
