@@ -57,7 +57,7 @@ const items = [
 const QuestionAndAnswer = () => {
    return (
       <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-10 lg:px-20">
-         <section className="flex w-full py-12 sm:flex-col md:flex-row QA_wrapper">
+         <section className="block sm:flex w-full py-12 sm:flex-col md:flex-row QA_wrapper">
             <div className="mr-12">
                <h2
                   className="pb-7 m-0 font-semibold tracking-widest text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:leading-10 w-96"

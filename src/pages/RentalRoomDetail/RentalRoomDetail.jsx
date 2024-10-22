@@ -58,8 +58,8 @@ const RentalRoomDetail = () => {
          <main className="mt-20 max-w-7xl px-3 sm:px-6 md:px-10 lg:px-20">
             <h1 className="text-3xl font-semibold">{roomDetails.tenPhong}</h1>
             <img src={roomDetails.hinhAnh} alt={roomDetails.tenPhong} className="my-4 rounded-lg" />
-            <div className="flex items-stretch justify-start flex-nowrap w-full mx-auto">
-               <div className="w-2/3">
+            <div className="block lg:flex items-stretch justify-start flex-nowrap w-full mx-auto">
+               <div className="w-full lg:w-2/3">
                   <div className="py-8" style={{ borderBottom: "1px solid rgb(221 221 221)" }}>
                      <h2 className="text-2xl">Entire home in {selectedLocationId}</h2>
                      <RoomDetail
@@ -160,7 +160,7 @@ const RentalRoomDetail = () => {
                      </ul>
                   </div>
                </div>
-               <div className="relative mr-0 w-1/3" style={{ marginLeft: "8.3333%" }}>
+               <div className="relative mr-0 w-full lg:w-1/3 ml-0 lg:ml-[8.3333%]">
                   <div
                      className="sticky top-20 w-full inline-block"
                      style={{ zIndex: "10", paddingRight: "1px" }}
