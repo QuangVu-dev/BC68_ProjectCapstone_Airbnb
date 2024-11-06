@@ -66,7 +66,7 @@ const QuestionAndAnswer = () => {
                   Answering your questions
                </h2>
             </div>
-            <Collapse accordion items={items} className="text-md sm:text-base" />
+            <Collapse accordion items={items} className="text-base sm:text-lg" />
          </section>
       </div>
    );

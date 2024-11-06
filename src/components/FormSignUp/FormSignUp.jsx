@@ -50,6 +50,7 @@ const FormSignUp = () => {
             "Congratulations on successfully creating your account. You will be redirected to the sign in page",
             "success"
           );
+          localStorage.setItem("user", JSON.stringify(res.data));
           setTimeout(() => {
             navigate("/dang-nhap");
           }, 2000);

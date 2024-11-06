@@ -13,4 +13,5 @@ export const pathDefault = {
   managerLocation: "/admin/manager-location",
   informationPertional: "/information-pertional",
   adminLogin: "/admin-login",
+  page404: "/page-404",
 };
